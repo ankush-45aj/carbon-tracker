@@ -1,43 +1,72 @@
+import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
 import Calculator from "../components/CarbonCalculator";
 import Insights from "../components/Insights";
 import Tips from "./Tips";
+import bgImage from "../assets/carbon-bg.jpg";
+
 
 export default function Home() {
   return (
-    <div className="premium-home-bg">
+    <div style={{ width: "100%", minHeight: "100vh", backgroundColor: "#ecfdf5" }}>
 
-      <main className="home-section">
-        {/* HERO */}
-        <div className="hero-header">
-          <h1 className="hero-title">
-            Track. Reduce. Inspire.
+      {/* HERO */}
+      <section
+        style={{
+          height: "60vh",
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          position: "relative",
+          color: "white",
+        }}
+      >
+
+        {/* Dark Overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(0,0,0,0.45)",
+          }}
+        />
+
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <h1 style={{ fontSize: "48px", marginBottom: "10px" }}>
+            Carbon Footprint Tracker
           </h1>
-          <p className="hero-subtitle">
-            Visualize and track your carbon emissions beautifully. Simple steps today shape a sustainable tomorrow.
+
+          <p style={{ fontSize: "18px" }}>
+            Track • Analyze • Reduce your CO₂ emissions
           </p>
         </div>
 
-        {/* DASHBOARD */}
-        <section className="glass-panel" style={{ marginTop: "40px" }}>
-          <Dashboard />
-        </section>
+      </section>
 
-        {/* CALCULATOR (includes graph + saved records) */}
-        <section className="glass-panel">
-          <Calculator />
-        </section>
 
-        {/* INSIGHTS */}
-        <section className="glass-panel">
-          <Insights />
-        </section>
+      {/* DASHBOARD */}
+      <section style={{ padding: "20px" }}>
+        <Dashboard />
+      </section>
 
-        {/* TIPS */}
-        <section className="glass-panel">
-          <Tips />
-        </section>
-      </main>
+      {/* CALCULATOR (includes graph + saved records) */}
+      <section style={{ padding: "40px", background: "#f9fafb" }}>
+        <Calculator />
+      </section>
+
+      {/* INSIGHTS */}
+      <section style={{ padding: "40px" }}>
+        <Insights />
+      </section>
+
+      {/* TIPS */}
+      <section style={{ padding: "40px", background: "#f1f5f9" }}>
+        <Tips />
+      </section>
 
     </div>
   );
