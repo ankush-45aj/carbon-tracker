@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
 import Calculator from "../components/CarbonCalculator";
 import Insights from "../components/Insights";
@@ -6,37 +5,39 @@ import Tips from "./Tips";
 
 export default function Home() {
   return (
-    <div style={{ width: "100%", minHeight: "100vh", backgroundColor: "#ecfdf5" }}>
+    <div className="premium-home-bg">
 
-      {/* HERO */}
-      <section style={{ padding: "40px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "32px", marginBottom: "10px" }}>
-          Carbon Footprint Tracker
-        </h1>
-        <p style={{ color: "#555" }}>
-          Visualize and track your carbon emissions
-        </p>
-      </section>
+      <main className="home-section">
+        {/* HERO */}
+        <div className="hero-header">
+          <h1 className="hero-title">
+            Track. Reduce. Inspire.
+          </h1>
+          <p className="hero-subtitle">
+            Visualize and track your carbon emissions beautifully. Simple steps today shape a sustainable tomorrow.
+          </p>
+        </div>
 
-      {/* DASHBOARD */}
-      <section style={{ padding: "20px" }}>
-        <Dashboard />
-      </section>
+        {/* DASHBOARD */}
+        <section className="glass-panel" style={{ marginTop: "40px" }}>
+          <Dashboard />
+        </section>
 
-      {/* CALCULATOR (includes graph + saved records) */}
-      <section style={{ padding: "40px", background: "#f9fafb" }}>
-        <Calculator />
-      </section>
+        {/* CALCULATOR (includes graph + saved records) */}
+        <section className="glass-panel">
+          <Calculator />
+        </section>
 
-      {/* INSIGHTS */}
-      <section style={{ padding: "40px" }}>
-        <Insights />
-      </section>
+        {/* INSIGHTS */}
+        <section className="glass-panel">
+          <Insights />
+        </section>
 
-      {/* TIPS */}
-      <section style={{ padding: "40px", background: "#f1f5f9" }}>
-        <Tips />
-      </section>
+        {/* TIPS */}
+        <section className="glass-panel">
+          <Tips />
+        </section>
+      </main>
 
     </div>
   );

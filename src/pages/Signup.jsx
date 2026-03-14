@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -9,34 +10,57 @@ export default function Signup() {
   const [password,setPassword]=useState("");
 
   const handleSignup = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      });
 
-    const res = await fetch("http://localhost:5000/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password
-      })
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        navigate("/login");
+      } else {
+        alert(data.message || "Signup failed");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Signup failed");
+    }
+  };
 
-    alert(data.message);
-
-    navigate("/login");
-
-  } catch (err) {
-    console.log(err);
-    alert("Signup failed");
-  }
-
-};
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("currentUser", JSON.stringify({ name: data.name }));
+        localStorage.setItem("isAuth", true);
+        navigate("/home");
+      } else {
+        alert(data.message || "Google Signup Failed");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong with Google Auth");
+    }
+  };
 
   return (
     <div className="signup-container">
@@ -68,6 +92,13 @@ export default function Signup() {
         />
 
         <button type="submit">Signup</button>
+
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "15px", marginBottom: "5px" }}>
+          <GoogleLogin 
+            onSuccess={handleGoogleSuccess}
+            onError={() => alert("Google Auth Failed")}
+          />
+        </div>
 
         <p>
           Already have an account? <Link to="/login"><b>Login</b></Link>

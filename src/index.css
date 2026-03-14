@@ -1,9 +1,181 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(120deg, #ecfdf5, #bbf7d0);
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+/* Base Form Elements */
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+button {
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Premium Home Page Classes */
+.premium-home-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfeff 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Decorative background elements */
+.premium-home-bg::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(167, 243, 208, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.premium-home-bg::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(165, 243, 252, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.home-section {
+  position: relative;
+  z-index: 10;
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+  margin-bottom: 40px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+}
+
+.hero-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #059669, #0284c7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #64748b;
+  font-weight: 300;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Authentication Pages (Kept functional for Login/Signup) */
+.signup-bg, .login-bg, .signup-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #dcfce7 0%, #e0f2fe 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-container form {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.5);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.signup-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #065f46;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.signup-container button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.signup-container button:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.signup-container p {
+  text-align: center;
+  margin-top: 15px;
+  color: #64748b;
+}
+
+.signup-container a {
+  color: #059669;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Legacy Components backwards compatibility */
 .center {
   max-width: 350px;
   margin: 100px auto;
@@ -12,208 +184,20 @@ body {
   border-radius: 10px;
 }
 
-input,
-button {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-/* Signup Background */
-.signup-bg {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #b8f2e6, #aed9e0, #faf3dd);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Signup Card */
-.signup-card {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 30px;
-  width: 350px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* Heading */
-.signup-card h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2d6a4f;
-}
-
-/* Inputs */
-.signup-card input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-/* Button */
-.signup-btn {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #2d6a4f, #52b788);
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.signup-btn:hover {
-  background: linear-gradient(135deg, #1b4332, #40916c);
-}
-
-/* Login text */
-.signup-card p {
-  text-align: center;
-  margin-top: 12px;
-}
-
-.signup-card a {
-  color: #1b4332;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-/* Login uses same style as Signup */
-.login-bg {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #b8f2e6, #aed9e0, #faf3dd);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.login-card {
-  background: rgba(255, 255, 255, 0.92);
-  padding: 30px;
-  width: 350px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-.login-card h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #1b4332;
-}
-
-.login-card input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #40916c, #74c69d);
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.login-btn:hover {
-  background: linear-gradient(135deg, #2d6a4f, #52b788);
-}
-
-.login-card p {
-  text-align: center;
-  margin-top: 12px;
-}
-
-.login-card a {
-  color: #2d6a4f;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.signup-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #d9fbe9;
-}
-
-.signup-container form {
-  width: 100%;
-  max-width: 420px;
-  /* 🔥 YAHI MAIN FIX HAI */
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.signup-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #145a32;
-}
-
-.signup-container input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.signup-container button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: linear-gradient(to right, #145a32, #2ecc71);
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.signup-container p {
-  text-align: center;
-  margin-top: 15px;
-}
-
 .calculator-box {
   max-width: 520px;
   margin: 30px auto;
-  padding: 25px;
+  padding: 30px;
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-/* Inputs */
-.calculator-box input {
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
-}
-
-/* Button */
 .calculator-box button {
   width: 100%;
   padding: 12px;
-  background-color: #14532d;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -221,35 +205,10 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-top: 15px;
 }
 
-/* Hover effect */
 .calculator-box button:hover {
-  background-color: #166534;
-  transform: translateY(-1px);
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-button {
-  cursor: pointer;
-}
-
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #f9fafb;
-}
-
-section {
-  width: 100%;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.25);
 }

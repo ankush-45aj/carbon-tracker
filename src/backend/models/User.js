@@ -14,7 +14,22 @@ const UserSchema = new mongoose.Schema({
 
   password: {
     type: String,
-    required: true
+    required: function () {
+      // Password is only required if they are signing up using local auth
+      return this.authProvider === 'local';
+    }
+  },
+
+  authProvider: {
+    type: String,
+    enum: ['local', 'google'],
+    default: 'local'
+  },
+
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true
   }
 
 });

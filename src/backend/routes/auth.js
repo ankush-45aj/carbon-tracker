@@ -1,8 +1,58 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
 
 const User = require("../models/User");
+
+const client = new OAuth2Client(process.env.VITE_GOOGLE_CLIENT_ID || "732049285098-9ptolq27oek56r22f0851jcd0hsk64l9.apps.googleusercontent.com");
+
+router.post("/google", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.VITE_GOOGLE_CLIENT_ID || "732049285098-9ptolq27oek56r22f0851jcd0hsk64l9.apps.googleusercontent.com",
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (user) {
+      if (!user.googleId) {
+        user.googleId = googleId;
+        user.authProvider = "google";
+        await user.save();
+      }
+    } else {
+      user = new User({
+        name,
+        email,
+        googleId,
+        authProvider: "google"
+      });
+      await user.save();
+    }
+
+    const jwtToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET
+    );
+
+    res.json({
+      token: jwtToken,
+      userId: user._id,
+      name: user.name
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Google Auth Failed" });
+  }
+});
 
 router.post("/register", async (req, res) => {
 
