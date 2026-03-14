@@ -5,15 +5,15 @@ import { GoogleLogin } from "@react-oauth/google";
 export default function Signup() {
   const navigate = useNavigate();
 
-  const [name,setName]=useState("");
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch("https://carbon-tracker-d2d8.onrender.com/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -68,33 +68,33 @@ export default function Signup() {
         <h2>Signup</h2>
 
         <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e)=>setName(e.target.value)}
-        required
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
 
         <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e)=>setEmail(e.target.value)}
-        required
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e)=>setPassword(e.target.value)}
-        required
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <button type="submit">Signup</button>
 
         <div style={{ display: "flex", justifyContent: "center", marginTop: "15px", marginBottom: "5px" }}>
-          <GoogleLogin 
+          <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={() => alert("Google Auth Failed")}
           />
