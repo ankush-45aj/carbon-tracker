@@ -1,0 +1,255 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(120deg, #ecfdf5, #bbf7d0);
+}
+
+.center {
+  max-width: 350px;
+  margin: 100px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+input,
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* Signup Background */
+.signup-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #b8f2e6, #aed9e0, #faf3dd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Signup Card */
+.signup-card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Heading */
+.signup-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2d6a4f;
+}
+
+/* Inputs */
+.signup-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Button */
+.signup-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2d6a4f, #52b788);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  background: linear-gradient(135deg, #1b4332, #40916c);
+}
+
+/* Login text */
+.signup-card p {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.signup-card a {
+  color: #1b4332;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Login uses same style as Signup */
+.login-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #b8f2e6, #aed9e0, #faf3dd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 30px;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1b4332;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #40916c, #74c69d);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #2d6a4f, #52b788);
+}
+
+.login-card p {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.login-card a {
+  color: #2d6a4f;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d9fbe9;
+}
+
+.signup-container form {
+  width: 100%;
+  max-width: 420px;
+  /* 🔥 YAHI MAIN FIX HAI */
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.signup-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #145a32;
+}
+
+.signup-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.signup-container button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(to right, #145a32, #2ecc71);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.signup-container p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.calculator-box {
+  max-width: 520px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Inputs */
+.calculator-box input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+/* Button */
+.calculator-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #14532d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.calculator-box button:hover {
+  background-color: #166534;
+  transform: translateY(-1px);
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+button {
+  cursor: pointer;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f9fafb;
+}
+
+section {
+  width: 100%;
+}
