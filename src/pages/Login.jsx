@@ -44,7 +44,10 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: credentialResponse.credential }),
       });
+
       const data = await res.json();
+      console.log("Google backend response:", data);
+
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.userId);
@@ -126,9 +129,7 @@ export default function Login() {
 
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "15px" }}>
           <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-            }}
+            onSuccess={handleGoogleSuccess}
             onError={() => {
               console.log("Login Failed");
             }}
