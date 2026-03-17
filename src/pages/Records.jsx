@@ -7,8 +7,8 @@ export default function Records() {
     try {
       const userId = localStorage.getItem("userId");
       const url = userId
-        ? `http://localhost:5000/api/carbon/${userId}`
-        : "http://localhost:5000/api/carbon";
+        ? `https://carbon-tracker-d2d8.onrender.com/${userId}`
+        : "https://carbon-tracker-d2d8.onrender.com";
 
       const res = await fetch(url);
       if (res.ok) {
@@ -31,7 +31,7 @@ export default function Records() {
 
   const deleteRecord = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/carbon/${id}`, {
+      const res = await fetch(`https://carbon-tracker-d2d8.onrender.com/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

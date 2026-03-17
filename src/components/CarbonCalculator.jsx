@@ -112,7 +112,7 @@ const CarbonCalculator = () => {
       total: total.toFixed(2)
     };
 
-    fetch("http://localhost:5000/api/carbon", {
+    fetch("https://carbon-tracker-d2d8.onrender.com/api/carbon", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newRecord)
@@ -141,8 +141,8 @@ const CarbonCalculator = () => {
       try {
         const userId = localStorage.getItem("userId");
         const url = userId
-          ? `http://localhost:5000/api/carbon/${userId}`
-          : "http://localhost:5000/api/carbon";
+          ? `https://carbon-tracker-d2d8.onrender.com/api/carbon/${userId}`
+          : "https://carbon-tracker-d2d8.onrender.com/api/carbon";
 
         const res = await fetch(url);
         if (res.ok) {
@@ -234,7 +234,7 @@ const CarbonCalculator = () => {
   // ---------------- DELETE SAVED RECORD ----------------
   const deleteRecord = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/carbon/${id}`, {
+      const res = await fetch(`https://carbon-tracker-d2d8.onrender.com/api/carbon/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

@@ -26,8 +26,8 @@ export default function Insights() {
     try {
       const userId = localStorage.getItem("userId");
       const url = userId
-        ? `http://localhost:5000/api/carbon/${userId}`
-        : "http://localhost:5000/api/carbon";
+        ? `https://carbon-tracker-d2d8.onrender.com/api/carbon/${userId}`
+        : "https://carbon-tracker-d2d8.onrender.com/api/carbon";
 
       const res = await fetch(url);
       if (res.ok) {
