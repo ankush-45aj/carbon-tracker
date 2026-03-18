@@ -6,10 +6,13 @@ import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Calculator from "./pages/Calculator";
-import Graph from "./pages/Graph";
+import History from "./pages/History";
 import Tips from "./pages/Tips";
 import Dashboard from "./components/Dashboard";
 import Records from "./pages/Records";
+import ResetPassword from "./pages/ResetPassword";
+import Challenges from "./pages/Challenges";
+import EcoChatbot from "./components/EcoChatbot";
 
 // 🔹 Navbar control component
 function Layout({ children }) {
@@ -18,12 +21,14 @@ function Layout({ children }) {
   const hideNavbar =
     location.pathname === "/" ||
     location.pathname === "/signup" ||
-    location.pathname === "/login";
+    location.pathname === "/login" ||
+    location.pathname === "/reset-password";
 
   return (
     <>
       {!hideNavbar && <Navbar />}
       {children}
+      <EcoChatbot />
     </>
   );
 }
@@ -37,6 +42,7 @@ function App() {
           <Route path="/" element={<Signup />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* MAIN APP */}
           <Route
@@ -48,9 +54,10 @@ function App() {
             }
           />
           <Route path="/calculator" element={<Calculator />} />
-          <Route path="/graph" element={<Graph />} />
+          <Route path="/history" element={<History />} />
           <Route path="/tips" element={<Tips />} />
           <Route path="/records" element={<Records />} />
+          <Route path="/challenges" element={<Challenges />} />
         </Routes>
       </Layout>
     </Router>

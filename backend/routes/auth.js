@@ -5,7 +5,7 @@ const { OAuth2Client } = require("google-auth-library");
 
 const User = require("../models/User");
 
-const client = new OAuth2Client(process.env.VITE_GOOGLE_CLIENT_ID || "732049285098-9ptolq27oek56r22f0851jcd0hsk64l9.apps.googleusercontent.com");
+const client = new OAuth2Client(process.env.VITE_GOOGLE_CLIENT_ID || "707054641027-mico6950jchpav9m0scohet78aoh0mfp.apps.googleusercontent.com");
 
 router.post("/google", async (req, res) => {
   try {
@@ -13,7 +13,7 @@ router.post("/google", async (req, res) => {
 
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: process.env.VITE_GOOGLE_CLIENT_ID || "732049285098-9ptolq27oek56r22f0851jcd0hsk64l9.apps.googleusercontent.com",
+      audience: process.env.VITE_GOOGLE_CLIENT_ID || "707054641027-mico6950jchpav9m0scohet78aoh0mfp.apps.googleusercontent.com",
     });
 
     const payload = ticket.getPayload();

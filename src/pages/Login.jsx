@@ -8,58 +8,73 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // ✅ LOGIN (Render API)
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://carbon-tracker-d2d8.onrender.com/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://carbon-tracker-d2d8.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.userId);
-        localStorage.setItem("currentUser", JSON.stringify({ name: data.name, email }));
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({ name: data.name, email })
+        );
         localStorage.setItem("isAuth", true);
+
         navigate("/home");
       } else {
         alert(data.message || "Invalid email or password");
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Something went wrong. Is your backend running?");
+      alert("Server error. Try again later.");
     }
   };
 
+  // ✅ GOOGLE LOGIN (Render API)
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch("https://carbon-tracker-d2d8.onrender.com/api/auth/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: credentialResponse.credential }),
-      });
+      const res = await fetch(
+        "https://carbon-tracker-d2d8.onrender.com/api/auth/google",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: credentialResponse.credential }),
+        }
+      );
 
       const data = await res.json();
-      console.log("Google backend response:", data);
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.userId);
-        localStorage.setItem("currentUser", JSON.stringify({ name: data.name }));
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({ name: data.name })
+        );
         localStorage.setItem("isAuth", true);
+
         navigate("/home");
       } else {
         alert(data.message || "Google Login Failed");
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong with Google Auth");
+      alert("Google authentication error");
     }
   };
 
@@ -79,23 +94,21 @@ export default function Login() {
           width: "420px",
           background: "#ffffff",
           padding: "30px",
-          borderRadius: "10px",
+          borderRadius: "12px",
           boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
         }}
       >
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Login</h2>
+        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+          Welcome Back
+        </h2>
 
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{
-            width: "100%",
-            padding: "12px",
-            marginBottom: "15px",
-          }}
+          style={inputStyle}
         />
 
         <input
@@ -104,43 +117,55 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{
-            width: "100%",
-            padding: "12px",
-            marginBottom: "15px",
-          }}
+          style={inputStyle}
         />
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "12px",
-            background: "linear-gradient(90deg, #2f855a, #48bb78)",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "16px",
-            marginBottom: "15px"
-          }}
-        >
+        {/* ✅ Forgot Password (added back) */}
+        <div style={{ textAlign: "right", marginBottom: "15px" }}>
+          <Link
+            to="/reset-password"
+            style={{ fontSize: "14px", color: "#059669" }}
+          >
+            Forgot Password?
+          </Link>
+        </div>
+
+        <button type="submit" style={buttonStyle}>
           Login
         </button>
 
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "15px" }}>
+        {/* GOOGLE LOGIN */}
+        <div style={{ display: "flex", justifyContent: "center", margin: "15px 0" }}>
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
-            onError={() => {
-              console.log("Login Failed");
-            }}
+            onError={() => console.log("Google Login Failed")}
           />
         </div>
 
-        <p style={{ marginTop: "15px", textAlign: "center" }}>
-          New user? <Link to="/">Signup</Link>
+        <p style={{ textAlign: "center" }}>
+          New user? <Link to="/signup">Signup</Link>
         </p>
-
       </form>
     </div>
   );
 }
+
+// --- STYLES ---
+const inputStyle = {
+  width: "100%",
+  padding: "12px",
+  marginBottom: "15px",
+  borderRadius: "6px",
+  border: "1px solid #ddd",
+};
+
+const buttonStyle = {
+  width: "100%",
+  padding: "12px",
+  background: "linear-gradient(90deg, #2f855a, #48bb78)",
+  color: "#fff",
+  border: "none",
+  cursor: "pointer",
+  fontSize: "16px",
+  borderRadius: "6px",
+};

@@ -136,6 +136,7 @@ const CarbonCalculator = () => {
   };
 
   // ---------------- LOAD SAVED DATA FROM DB ----------------
+  // ---------------- LOAD SAVED DATA FROM DB ----------------
   useEffect(() => {
     const fetchRecords = async () => {
       try {
@@ -147,16 +148,26 @@ const CarbonCalculator = () => {
         const res = await fetch(url);
         if (res.ok) {
           let saved = await res.json();
-          // Map backend totalCO2 to total so chart doesn't break
-          saved = saved.map(r => ({ ...r, total: r.totalCO2 != null ? r.totalCO2.toFixed(2) : (r.total || '0') }));
+
+          saved = saved.map(r => ({
+            ...r,
+            total: r.totalCO2 != null
+              ? r.totalCO2.toFixed(2)
+              : (r.total || '0')
+          }));
+
           setRecords(saved);
 
           setChartData({
-            labels: saved.map((r) => r.date ? r.date.split(',')[0] : 'No Date'),
+            labels: saved.length === 1
+              ? ["Start", saved[0].date?.split(',')[0] || "No Date"]
+              : saved.map((r) => r.date?.split(',')[0] || "No Date"),
             datasets: [
               {
                 label: "Total CO₂ (kg)",
-                data: saved.map((r) => r.total),
+                data: saved.length === 1
+                  ? [0, saved[0].total]
+                  : saved.map((r) => r.total),
                 borderWidth: 2,
                 tension: 0.4,
               },
@@ -175,11 +186,11 @@ const CarbonCalculator = () => {
   useEffect(() => {
     if (records.length > 0) {
       setChartData({
-        labels: records.map((r) => r.date ? r.date.split(',')[0] : 'No Date'),
+        labels: records.length === 1 ? ["Start", records[0].date ? records[0].date.split(',')[0] : 'No Date'] : records.map((r) => r.date ? r.date.split(',')[0] : 'No Date'),
         datasets: [
           {
             label: "Total CO₂ (kg)",
-            data: records.map((r) => r.total),
+            data: records.length === 1 ? [0, records[0].total] : records.map((r) => r.total),
             borderWidth: 2,
             tension: 0.4,
           },
@@ -226,22 +237,25 @@ const CarbonCalculator = () => {
       filename: 'Carbon_Calculation_Report.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      pagebreak: { mode: ['css', 'legacy'], avoid: '.pdf-block-avoid' }
     };
     html2pdf().set(opt).from(element).save();
   };
 
   // ---------------- DELETE SAVED RECORD ----------------
+  // ---------------- DELETE SAVED RECORD ----------------
   const deleteRecord = async (id) => {
     try {
-      const res = await fetch(`https://carbon-tracker-d2d8.onrender.com/api/carbon/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://carbon-tracker-d2d8.onrender.com/api/carbon/${id}`,
+        { method: "DELETE" }
+      );
+
       if (res.ok) {
-        // Remove from local state
         const updatedRecords = records.filter((r) => r._id !== id);
         setRecords(updatedRecords);
-        // Dispatch event for Dashboard to update
+
         window.dispatchEvent(new Event('carbonUpdated'));
       }
     } catch (err) {
@@ -251,59 +265,81 @@ const CarbonCalculator = () => {
 
   // ---------------- UI ----------------
   return (
-    <div style={{ maxWidth: "500px", margin: "auto" }}>
-      <h2 style={{ textAlign: "center" }}>Carbon Footprint Calculator</h2>
+    <div className="calculator-box" style={{ maxWidth: "600px", margin: "auto" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Carbon Footprint Calculator</h2>
 
-      <h4 style={{ marginTop: "15px" }}>Transportation</h4>
-      <label>Car/Bike Travel (km)</label>
-      <input
-        type="number"
-        value={transport}
-        onChange={(e) => setTransport(e.target.value)}
-        placeholder="Enter distance in km"
-      />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px 20px" }}>
 
-      <label>Flights (Hours)</label>
-      <input
-        type="number"
-        value={flights}
-        onChange={(e) => setFlights(e.target.value)}
-        placeholder="Enter flight hours"
-      />
+        {/* Transportation */}
+        <h4 style={{ gridColumn: "1 / -1", margin: "0", marginTop: "10px" }}>Transportation</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label>Car/Bike Travel (km)</label>
+          <input
+            type="number"
+            value={transport}
+            onChange={(e) => setTransport(e.target.value)}
+            placeholder="Enter distance in km"
+            style={{ width: "100%", boxSizing: "border-box" }}
+          />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label>Flights (Hours)</label>
+          <input
+            type="number"
+            value={flights}
+            onChange={(e) => setFlights(e.target.value)}
+            placeholder="Enter flight hours"
+            style={{ width: "100%", boxSizing: "border-box" }}
+          />
+        </div>
 
-      <h4 style={{ marginTop: "15px" }}>Home Energy</h4>
-      <label>Electricity Used (kWh)</label>
-      <input
-        type="number"
-        value={electricity}
-        onChange={(e) => setElectricity(e.target.value)}
-        placeholder="Enter electricity usage"
-      />
+        {/* Home Energy */}
+        <h4 style={{ gridColumn: "1 / -1", margin: "0", marginTop: "10px" }}>Home Energy</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label>Electricity Used (kWh)</label>
+          <input
+            type="number"
+            value={electricity}
+            onChange={(e) => setElectricity(e.target.value)}
+            placeholder="Enter electricity usage"
+            style={{ width: "100%", boxSizing: "border-box" }}
+          />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label>LPG Used</label>
+          <input
+            type="number"
+            value={lpg}
+            onChange={(e) => setLpg(e.target.value)}
+            placeholder="Enter LPG usage"
+            style={{ width: "100%", boxSizing: "border-box" }}
+          />
+        </div>
 
-      <label>LPG Used</label>
-      <input
-        type="number"
-        value={lpg}
-        onChange={(e) => setLpg(e.target.value)}
-        placeholder="Enter LPG usage"
-      />
+        {/* Lifestyle */}
+        <h4 style={{ gridColumn: "1 / -1", margin: "0", marginTop: "10px" }}>Lifestyle</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label>Waste Generated (kg/week)</label>
+          <input
+            type="number"
+            value={waste}
+            onChange={(e) => setWaste(e.target.value)}
+            placeholder="Enter waste in kg"
+            style={{ width: "100%", boxSizing: "border-box" }}
+          />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label>Meat-based Meals (per week)</label>
+          <input
+            type="number"
+            value={meatMeals}
+            onChange={(e) => setMeatMeals(e.target.value)}
+            placeholder="Enter meat meals count"
+            style={{ width: "100%", boxSizing: "border-box" }}
+          />
+        </div>
 
-      <h4 style={{ marginTop: "15px" }}>Lifestyle</h4>
-      <label>Waste Generated (kg/week)</label>
-      <input
-        type="number"
-        value={waste}
-        onChange={(e) => setWaste(e.target.value)}
-        placeholder="Enter waste in kg"
-      />
-
-      <label>Meat-based Meals (per week)</label>
-      <input
-        type="number"
-        value={meatMeals}
-        onChange={(e) => setMeatMeals(e.target.value)}
-        placeholder="Enter meat meals count"
-      />
+      </div>
 
       <button onClick={calculateCarbon} style={{ marginTop: "15px", width: "100%", padding: "10px", background: "#3b82f6", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}>
         Calculate
@@ -311,37 +347,48 @@ const CarbonCalculator = () => {
 
       {totalCO2 > 0 && (
         <div style={{ marginTop: "30px" }}>
-          <div id="pdf-content" style={{ padding: "20px", background: "#fff", borderRadius: "10px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
-            <h3 style={{ textAlign: "center", marginBottom: "20px", color: "#1f2937", marginTop: 0 }}>Your Carbon Report</h3>
-            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
-              <span>🚗 Transportation:</span> <strong>{transportCO2} kg CO₂</strong>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
-              <span>✈️ Flights:</span> <strong>{flightsCO2} kg CO₂</strong>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
-              <span>⚡ Electricity:</span> <strong>{electricityCO2} kg CO₂</strong>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
-              <span>🔥 LPG:</span> <strong>{lpgCO2} kg CO₂</strong>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
-              <span>♻️ Waste:</span> <strong>{wasteCO2} kg CO₂</strong>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
-              <span>🥩 Meat/Diet:</span> <strong>{meatCO2} kg CO₂</strong>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "20px" }}>
-              <span>🏠 <b>Home Energy:</b></span> <strong><b>{homeEnergyCO2} kg CO₂</b></strong>
+          <div id="pdf-content">
+            <div className="pdf-block-avoid" style={{ padding: "20px", background: "var(--card-bg, #fff)", borderRadius: "10px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "20px" }}>
+              <h3 style={{ textAlign: "center", marginBottom: "20px", marginTop: 0 }}>Your Carbon Report</h3>
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
+                <span>🚗 Transportation:</span> <strong>{transportCO2} kg CO₂</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
+                <span>✈️ Flights:</span> <strong>{flightsCO2} kg CO₂</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
+                <span>⚡ Electricity:</span> <strong>{electricityCO2} kg CO₂</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
+                <span>🔥 LPG:</span> <strong>{lpgCO2} kg CO₂</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
+                <span>♻️ Waste:</span> <strong>{wasteCO2} kg CO₂</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "10px" }}>
+                <span>🥩 Meat/Diet:</span> <strong>{meatCO2} kg CO₂</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb", paddingBottom: "10px", marginBottom: "20px" }}>
+                <span>🏠 <b>Home Energy:</b></span> <strong><b>{homeEnergyCO2} kg CO₂</b></strong>
+              </div>
+
+              <h3 style={{ textAlign: "center", fontSize: "24px", color: "#ef4444", marginBottom: "20px" }}>Total: {totalCO2} kg CO₂</h3>
+
+              <div style={{ background: "var(--input-bg, #f3f4f6)", padding: "15px", borderRadius: "8px" }}>
+                <h4 style={{ margin: "0 0 10px 0" }}>📊 Insights</h4>
+                <p style={{ margin: "0 0 5px 0" }}>{getInsight()}</p>
+                <p style={{ margin: 0 }}>{getTip()}</p>
+              </div>
             </div>
 
-            <h3 style={{ textAlign: "center", fontSize: "24px", color: "#ef4444", marginBottom: "20px" }}>Total: {totalCO2} kg CO₂</h3>
-
-            <div style={{ background: "#f3f4f6", padding: "15px", borderRadius: "8px" }}>
-              <h4 style={{ margin: "0 0 10px 0" }}>📊 Insights</h4>
-              <p style={{ margin: "0 0 5px 0" }}>{getInsight()}</p>
-              <p style={{ margin: 0 }}>{getTip()}</p>
-            </div>
+            {records.length > 0 && (
+              <div className="pdf-block-avoid" style={{ padding: "20px", background: "var(--card-bg, #fff)", borderRadius: "10px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", backgroundColor: '#ffffff' }}>
+                <h3 style={{ textAlign: "center" }}>📈 Carbon Footprint Trend</h3>
+                <div style={{ background: 'white', padding: "10px" }}>
+                  <Line data={chartData} options={{ animation: false }} />
+                </div>
+              </div>
+            )}
           </div>
 
           <button
@@ -366,15 +413,6 @@ const CarbonCalculator = () => {
             📄 Save Calculation as PDF
           </button>
         </div>
-      )}
-
-      {records.length > 0 && (
-        <>
-          <hr />
-
-          <h3>📈 Carbon Footprint Trend</h3>
-          <Line data={chartData} />
-        </>
       )}
 
       <hr />

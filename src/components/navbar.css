@@ -1,10 +1,11 @@
 .navbar {
   height: 60px;
-  background-color: #0f4d3a;
+  background-color: var(--navbar-bg, #0f4d3a);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 40px;
+  transition: background-color 0.3s ease;
 }
 
 .logo {
@@ -16,10 +17,8 @@
 .nav-links {
   list-style: none;
   display: flex;
-  /* 🔥 MAIN FIX */
   align-items: center;
   gap: 25px;
-  /* 🔥 spacing fix */
   margin: 0;
   padding: 0;
 }
@@ -27,6 +26,8 @@
 .nav-links li {
   margin: 0;
   padding: 0;
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a {
@@ -38,4 +39,25 @@
 
 .nav-links a:hover {
   text-decoration: underline;
+}
+
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
 }

@@ -5,6 +5,8 @@ import { GoogleLogin } from "@react-oauth/google";
 export default function Signup() {
   const navigate = useNavigate();
 
+  const BASE_URL = "https://carbon-tracker-d2d8.onrender.com";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +15,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://carbon-tracker-d2d8.onrender.com/api/auth/register", {
+      const res = await fetch(`${BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -41,12 +43,14 @@ export default function Signup() {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch("https://carbon-tracker-d2d8.onrender.com/api/auth/google", {
+      const res = await fetch(`${BASE_URL}/api/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: credentialResponse.credential }),
       });
+
       const data = await res.json();
+
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.userId);
@@ -63,48 +67,55 @@ export default function Signup() {
   };
 
   return (
-    <div className="signup-container">
-      <form onSubmit={handleSignup}>
-        <h2>Signup</h2>
+    <div className="signup-bg">
+      <div className="signup-container">
+        <form onSubmit={handleSignup}>
+          <h2>Create an Account</h2>
 
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <button type="submit">Signup</button>
-
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "15px", marginBottom: "5px" }}>
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => alert("Google Auth Failed")}
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
-        </div>
 
-        <p>
-          Already have an account? <Link to="/login"><b>Login</b></Link>
-        </p>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-      </form>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button type="submit" style={{ width: "100%" }}>
+            Signup
+          </button>
+
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "15px", marginBottom: "5px" }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => alert("Google Auth Failed")}
+            />
+          </div>
+
+          <p>
+            Already have an account?{" "}
+            <Link to="/login">
+              <b>Login</b>
+            </Link>
+          </p>
+
+        </form>
+      </div>
     </div>
   );
 }
